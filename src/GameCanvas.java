@@ -12,6 +12,7 @@ public class GameCanvas extends JPanel {
 
     BufferedImage backBuffered;
     Graphics graphics;
+    Background background = new Background(0,0,1024,600, Color.BLACK);
 
     List<Star> stars;
     List<Enemy> enemies;
@@ -55,18 +56,13 @@ public class GameCanvas extends JPanel {
     }
 
     public void renderAll() {
-        this.renderBackground();
+        this.background.render(graphics);
 
         this.stars.forEach(star -> star.render(graphics));
         this.enemies.forEach(enemy -> enemy.render(graphics));
         this.player.render(graphics);
 
         this.repaint();
-    }
-
-    private void renderBackground() {
-        this.graphics.setColor(Color.BLACK);
-        this.graphics.fillRect(0, 0, 1024, 600);
     }
 
     public void runAll() {

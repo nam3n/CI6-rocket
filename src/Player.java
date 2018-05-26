@@ -24,39 +24,21 @@ public class Player {
         this.velocityY = velocityY;
     }
 
-    public void moveLeft() {
-        this.velocityX -= 20;
-    }
-
-    public void moveRight() {
-        this.velocityX += 20;
-    }
-
-    public void moveUp() {
-        this.velocityY -= 20;
-    }
-
-    public void moveDown() {
-        this.velocityY += 20;
-    }
-
     public void run() {
         this.x += this.velocityX;
         this.y += this.velocityY;
-        this.velocityX = 0;
-        this.velocityY = 0;
         if (this.x >= 1024) {
             this.x = 1;
-            this.y = random.nextInt(600);
+            this.y = random.nextInt(600 - this.height);
         } else if (this.x <= -this.width) {
             this.x = 1024 - this.width;
-            this.y = random.nextInt(600);
+            this.y = random.nextInt(600 - this.height);
         } else if (this.y >= 600) {
             this.y = 1;
-            this.x = random.nextInt(1024);
+            this.x = random.nextInt(1024 - this.width);
         } else if (this.y <= -this.height) {
             this.y = 600 - this.height;
-            this.x = random.nextInt(1024);
+            this.x = random.nextInt(1024 - this.width);
         }
     }
 
