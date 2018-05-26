@@ -27,18 +27,25 @@ public class Enemy {
 
 
     public void moveForward(int x, int y) {
-        if (this.x > x) {
-            this.x -= this.velocityX;
+        if (Math.abs(this.x - x) < this.velocityX) {
+            this.x = x;
         } else {
-            this.x += this.velocityX;
+            if (this.x > x) {
+                this.x -= this.velocityX;
+            } else {
+                this.x += this.velocityX;
+            }
         }
 
-        if (this.y > y) {
-            this.y -= this.velocityY;
+        if (Math.abs(this.y - y) < this.velocityY) {
+            this.y = y;
         } else {
-            this.y += this.velocityY;
+            if (this.y > y) {
+                this.y -= this.velocityY;
+            } else {
+                this.y += this.velocityY;
+            }
         }
-
     }
 
     public void render(Graphics graphics) {
