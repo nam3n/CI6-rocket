@@ -7,48 +7,35 @@ public class Enemy {
     private Random random = new Random();
 
     public BufferedImage image;
-    public int x;
-    public int y;
+    public Vecter2D position;
     public int width;
     public int height;
-    public int velocityX;
-    public int velocityY;
+    public Vecter2D velocity;
+    public int speed;
 
-    public Enemy(BufferedImage image, int x, int y, int width, int height, int velocityX, int velocityY) {
+    public Enemy(BufferedImage image, int x, int y, int width, int height, int speed) {
         this.image = image;
-        this.x = x;
-        this.y = y;
+        this.position = new Vecter2D(x, y);
         this.width = width;
         this.height = height;
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
+        this.speed = speed;
+        this.velocity = new Vecter2D();
     }
 
+    public void moveForward(Vecter2D positionPlayer) {
+        this.updateVelocity(positionPlayer);
+        this.run();
+    }
 
+    public void updateVelocity(Vecter2D positionPlayer) {
+        this.velocity.set(positionPlayer.subtract(this.position).normalize()).multiply(this.speed);
+    }
 
-    public void moveForward(int x, int y) {
-        if (Math.abs(this.x - x) < this.velocityX) {
-            this.x = x;
-        } else {
-            if (this.x > x) {
-                this.x -= this.velocityX;
-            } else {
-                this.x += this.velocityX;
-            }
-        }
-
-        if (Math.abs(this.y - y) < this.velocityY) {
-            this.y = y;
-        } else {
-            if (this.y > y) {
-                this.y -= this.velocityY;
-            } else {
-                this.y += this.velocityY;
-            }
-        }
+    public void run() {
+        this.position.addUp(this.velocity);
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(this.image, this.x, this.y, this.width, this.height, null);
+        graphics.drawImage(this.image, (int)this.position.x, (int)this.position.y, this.width, this.height, null);
     }
 }

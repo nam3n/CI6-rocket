@@ -4,31 +4,24 @@ import java.awt.image.BufferedImage;
 public class Star {
 
     public BufferedImage image;
-    public int x;
-    public int y;
+    public Vecter2D position;
     public int width;
     public int height;
-    public int velocityX;
-    public int velocityY;
+    public Vecter2D velocity;
 
     public Star(BufferedImage image, int x, int y, int width, int height, int velocityX, int velocityY) {
         this.image = image;
-        this.x = x;
-        this.y = y;
+        this.position = new Vecter2D(x, y);
         this.width = width;
         this.height = height;
-        this.velocityX = velocityX;
-        this.velocityY = velocityY;
+        this.velocity = new Vecter2D(velocityX, velocityY);
     }
 
-
-
     public void run() {
-        this.x += this.velocityX;
-        this.y += this.velocityY;
+        this.position.addUp(this.velocity);
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(this.image, this.x, this.y, this.width, this.height, null);
+        graphics.drawImage(this.image, (int)this.position.x, (int)this.position.y, this.width, this.height, null);
     }
 }

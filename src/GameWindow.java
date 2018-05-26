@@ -37,33 +37,15 @@ public class GameWindow extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    gameCanvas.player.velocityX = -10;
+                    gameCanvas.player.velocity.set(gameCanvas.player.velocity.rotate(345));
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    gameCanvas.player.velocityX = 10;
-                }
-                if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    gameCanvas.player.velocityY = -10;
-                }
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    gameCanvas.player.velocityY = 10;
+                    gameCanvas.player.velocity.set(gameCanvas.player.velocity.rotate(15));
                 }
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    gameCanvas.player.velocityX = 0;
-                }
-                if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    gameCanvas.player.velocityX = 0;
-                }
-                if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    gameCanvas.player.velocityY = 0;
-                }
-                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                    gameCanvas.player.velocityY = 0;
-                }
             }
         });
     }

@@ -26,7 +26,7 @@ public class GameCanvas extends JPanel {
         this.setSize(1024, 600);
         this.setupBackBuffered();
         this.setupCharacter();
-        this.createPlayer();
+        this.player = new Player(400, 300);
 
         this.setVisible(true);
     }
@@ -70,7 +70,7 @@ public class GameCanvas extends JPanel {
         this.createEnemy();
 
         this.stars.forEach(star -> star.run());
-        this.enemies.forEach(enemy -> enemy.moveForward(player.x + player.width/2, player.y + player.height/2));
+        this.enemies.forEach(enemy -> enemy.moveForward(this.player.position));
         this.player.run();
     }
 
@@ -101,8 +101,7 @@ public class GameCanvas extends JPanel {
                     this.random.nextInt(600) * 1,
                     20,
                     20,
-                    this.random.nextInt(3) + 1,
-                    this.random.nextInt(3) + 1
+                    this.random.nextInt(4) + 1
             );
             this.enemies.add(enemy);
             this.countEnemy = 0;
@@ -111,19 +110,6 @@ public class GameCanvas extends JPanel {
         }
 
     }
-
-    private void createPlayer() {
-        this.player = new Player(
-                this.loadImage("resources/images/circle.png"),
-                600,
-                300,
-                50,
-                50,
-                0,
-                0
-        );
-    }
-
 
     private BufferedImage loadImage(String path) {
         try {
