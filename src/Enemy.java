@@ -28,7 +28,7 @@ public class Enemy {
     }
 
     public void updateVelocity(Vecter2D positionPlayer) {
-        this.velocity.set(positionPlayer.subtract(this.position).normalize()).multiply(this.speed);
+        this.velocity.set(positionPlayer.subtract(this.position).normalize()).multiplyUp(this.speed);
     }
 
     public void run() {

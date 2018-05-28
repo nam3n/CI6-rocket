@@ -58,10 +58,14 @@ public class Vecter2D {
         return this.subtract(vecter2D.x, vecter2D.y);
     }
 
-    public Vecter2D multiply(float number) {
+    public Vecter2D multiplyUp(float number) {
         this.x *= number;
         this.y *= number;
         return  this;
+    }
+
+    public Vecter2D multiply(float number) {
+        return new Vecter2D(this.x * number, this.y * number);
     }
 
     public float length() {

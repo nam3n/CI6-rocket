@@ -10,11 +10,13 @@ public class Player {
 
     public Vecter2D position;
     public Vecter2D velocity;
+    public float height = 18;
+    public float width = 16;
+    public double angleChangeVelocity = 0;
 
     private Random random;
     private List<Vecter2D> verties;
     private Polygon polygon;
-    private Vecter2D vertex;
 
     public Player(int x, int y) {
         this.position = new Vecter2D(x, y);
@@ -25,17 +27,22 @@ public class Player {
     }
 
     public void run() {
+        this.velocity.set(this.velocity.rotate(this.angleChangeVelocity));
         this.position.addUp(this.velocity);
         this.backToScreen();
         this.updateVerties();
     }
 
     private void updateVerties() {
-        this.verties = Arrays.asList(
-                new Vecter2D(this.position.x - 6, this.position.y - 8),
-                new Vecter2D(this.position.x - 6, this.position.y + 8),
-                new Vecter2D(this.position.x + 12, this.position.y)
-        );
+        // Triangle ABC, G is triangle center, I is BC center
+        float k = (float) ((2.0 / 3.0) * (this.height / this.velocity.length()));
+        Vecter2D GA = this.velocity.multiply(k);
+        Vecter2D OA = this.position.add(GA);
+        Vecter2D OI = this.position.subtract(GA.multiply((float) (1.0 / 2.0)));
+        k = (float) ((this.width / 2.0) / this.velocity.length());
+        Vecter2D OB = this.velocity.rotate(90).multiply(k).add(OI);
+        Vecter2D OC = this.velocity.rotate(270).multiply(k).add(OI);
+        this.verties = Arrays.asList(OA, OB, OC);
     }
 
     public void backToScreen() {
