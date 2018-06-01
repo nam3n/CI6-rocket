@@ -8,6 +8,7 @@ public class GameWindow extends JFrame {
 
     GameCanvas gameCanvas;
     long lastTime = 0;
+    boolean speedUp = false;
 
     public GameWindow() {
         this.setSize(1024, 600); // set size window
@@ -42,6 +43,15 @@ public class GameWindow extends JFrame {
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     gameCanvas.player.angleChangeVelocity = 5;
                 }
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    if (speedUp == false) {
+                        gameCanvas.player.velocity.multiplyUp(2);
+                        speedUp = true;
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    gameCanvas.player.shooting = true;
+                }
             }
 
             @Override
@@ -51,6 +61,15 @@ public class GameWindow extends JFrame {
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     gameCanvas.player.angleChangeVelocity = 0;
+                }
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    if (speedUp) {
+                        speedUp = false;
+                        gameCanvas.player.velocity.multiplyUp(0.5f);
+                    }
+                }
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    gameCanvas.player.shooting = false;
                 }
             }
         });

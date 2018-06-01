@@ -5,26 +5,29 @@ import java.util.Random;
 public class Enemy {
 
     private Random random = new Random();
+    private ImageRenderer renderer;
 
-    public BufferedImage image;
     public Vecter2D position;
-    public int width;
-    public int height;
     public Vecter2D velocity;
     public int speed;
+    public EnemyShoot enemyShoot;
 
-    public Enemy(BufferedImage image, int x, int y, int width, int height, int speed) {
-        this.image = image;
-        this.position = new Vecter2D(x, y);
-        this.width = width;
-        this.height = height;
-        this.speed = speed;
+    public Enemy() {
+        this.position = new Vecter2D(random.nextInt(1000), random.nextInt(580));
+        this.speed = random.nextInt(4) + 1;
         this.velocity = new Vecter2D();
+        this.renderer = new ImageRenderer("resources/images/circle.png", 20, 20);
+        this.enemyShoot = new EnemyShoot();
     }
 
     public void moveForward(Vecter2D positionPlayer) {
         this.updateVelocity(positionPlayer);
         this.run();
+    }
+
+    public void shootAround() {
+        this.enemyShoot.run(this.position);
+        this.enemyShoot.bulletEnemies.forEach(bulletEnemy -> bulletEnemy.run());
     }
 
     public void updateVelocity(Vecter2D positionPlayer) {
@@ -36,6 +39,7 @@ public class Enemy {
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(this.image, (int)this.position.x, (int)this.position.y, this.width, this.height, null);
+        this.renderer.render(graphics, this.position);
+        this.enemyShoot.bulletEnemies.forEach(bulletEnemy -> bulletEnemy.render(graphics));
     }
 }

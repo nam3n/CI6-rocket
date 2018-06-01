@@ -10,39 +10,30 @@ public class Player {
 
     public Vecter2D position;
     public Vecter2D velocity;
-    public float height = 18;
-    public float width = 16;
+    public float height = 25;
+    public float width = 20;
     public double angleChangeVelocity = 0;
+    public boolean shooting = false;
 
     private Random random;
     private List<Vecter2D> verties;
-    private Polygon polygon;
+    private PolygonRenderer renderer;
+    private PlayerShoot playerShoot;
 
-    public Player(int x, int y) {
-        this.position = new Vecter2D(x, y);
+    public Player() {
+        this.position = new Vecter2D(300,300);
         this.velocity = new Vecter2D(5, 0);
         this.random = new Random();
-        this.updateVerties();
-        this.polygon = new Polygon();
+        this.renderer = new PolygonRenderer(java.awt.Color.CYAN);
+        this.playerShoot = new PlayerShoot();
     }
 
     public void run() {
         this.velocity.set(this.velocity.rotate(this.angleChangeVelocity));
         this.position.addUp(this.velocity);
         this.backToScreen();
-        this.updateVerties();
-    }
-
-    private void updateVerties() {
-        // Triangle ABC, G is triangle center, I is BC center
-        float k = (float) ((2.0 / 3.0) * (this.height / this.velocity.length()));
-        Vecter2D GA = this.velocity.multiply(k);
-        Vecter2D OA = this.position.add(GA);
-        Vecter2D OI = this.position.subtract(GA.multiply((float) (1.0 / 2.0)));
-        k = (float) ((this.width / 2.0) / this.velocity.length());
-        Vecter2D OB = this.velocity.rotate(90).multiply(k).add(OI);
-        Vecter2D OC = this.velocity.rotate(270).multiply(k).add(OI);
-        this.verties = Arrays.asList(OA, OB, OC);
+        if (shooting) this.playerShoot.run(this);
+        this.playerShoot.bulletPlayers.forEach(bulletPlayer -> bulletPlayer.run());
     }
 
     public void backToScreen() {
@@ -58,9 +49,7 @@ public class Player {
     }
 
     public void render(Graphics graphics) {
-        graphics.setColor(java.awt.Color.RED);
-        this.polygon.reset();
-        this.verties.forEach(vecter2D -> polygon.addPoint((int) vecter2D.x, (int) vecter2D.y));
-        graphics.fillPolygon(this.polygon);
+        this.renderer.render(graphics, this.position, this.velocity, this.width, this.height);
+        this.playerShoot.bulletPlayers.forEach(bulletPlayer -> bulletPlayer.render(graphics));
     }
 }

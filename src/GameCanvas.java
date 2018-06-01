@@ -17,6 +17,7 @@ public class GameCanvas extends JPanel {
     List<Star> stars;
     List<Enemy> enemies;
     Player player;
+    Enemy specialEnemy;
 
     private Random random = new Random();
     private int countStar = 0;
@@ -26,8 +27,8 @@ public class GameCanvas extends JPanel {
         this.setSize(1024, 600);
         this.setupBackBuffered();
         this.setupCharacter();
-        this.player = new Player(400, 300);
-
+        this.player = new Player();
+        this.specialEnemy = new Enemy();
         this.setVisible(true);
     }
 
@@ -61,6 +62,7 @@ public class GameCanvas extends JPanel {
         this.stars.forEach(star -> star.render(graphics));
         this.enemies.forEach(enemy -> enemy.render(graphics));
         this.player.render(graphics);
+        this.specialEnemy.render(graphics);
 
         this.repaint();
     }
@@ -72,17 +74,16 @@ public class GameCanvas extends JPanel {
         this.stars.forEach(star -> star.run());
         this.enemies.forEach(enemy -> enemy.moveForward(this.player.position));
         this.player.run();
+        this.specialEnemy.shootAround();
     }
 
     private void createStar() {
-        if (this.countStar == 30) {
+        if (this.countStar == 1) {
             Star star = new Star(
-                    this.loadImage("resources/images/star.png"),
                     1024,
-                    this.random.nextInt(600),
-                    5,
-                    5,
-                    -(this.random.nextInt(3) + 1),
+                    this.random.nextInt(600) * 1,
+                    this.random.nextInt(3) + 1,
+                    -(this.random.nextInt(3) + 1) * 1,
                     0
             );
             this.stars.add(star);
@@ -94,15 +95,8 @@ public class GameCanvas extends JPanel {
     }
 
     private void createEnemy() {
-        if (this.countEnemy == 200) {
-            Enemy enemy = new Enemy(
-                    this.loadImage("resources/images/circle.png"),
-                    this.random.nextInt(1024) * 1,
-                    this.random.nextInt(600) * 1,
-                    20,
-                    20,
-                    this.random.nextInt(4) + 1
-            );
+        if (this.countEnemy == 100) {
+            Enemy enemy = new Enemy();
             this.enemies.add(enemy);
             this.countEnemy = 0;
         } else {
