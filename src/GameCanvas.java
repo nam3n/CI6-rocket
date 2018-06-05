@@ -1,34 +1,23 @@
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class GameCanvas extends JPanel {
 
     BufferedImage backBuffered;
     Graphics graphics;
-    Background background = new Background(0,0,1024,600, Color.BLACK);
+    Background background = new Background(0,0, Color.BLACK);
 
-    List<Star> stars;
-    List<Enemy> enemies;
     Player player;
     Enemy specialEnemy;
 
-    private Random random = new Random();
-    private int countStar = 0;
-    private int countEnemy = 0;
+    private EnemySpawner enemySpawner;
+    private StarSpawner starSpawner;
 
     public GameCanvas() {
         this.setSize(1024, 600);
         this.setupBackBuffered();
         this.setupCharacter();
-        this.player = new Player();
-        this.specialEnemy = new Enemy();
         this.setVisible(true);
     }
 
@@ -38,16 +27,10 @@ public class GameCanvas extends JPanel {
     }
 
     private void setupCharacter() {
-        this.setupStar();
-        this.setupEnemy();
-    }
-
-    private void setupStar() {
-        this.stars = new ArrayList<>();
-    }
-
-    private void setupEnemy() {
-        this.enemies = new ArrayList<>();
+        this.player = new Player();
+        this.specialEnemy = new Enemy();
+        this.starSpawner = new StarSpawner();
+        this.enemySpawner = new EnemySpawner();
     }
 
     @Override
@@ -59,58 +42,19 @@ public class GameCanvas extends JPanel {
     public void renderAll() {
         this.background.render(graphics);
 
-        this.stars.forEach(star -> star.render(graphics));
-        this.enemies.forEach(enemy -> enemy.render(graphics));
         this.player.render(graphics);
         this.specialEnemy.render(graphics);
+        this.enemySpawner.enemies.forEach(enemy -> enemy.render(graphics));
+        this.starSpawner.stars.forEach(star -> star.render(graphics));
 
         this.repaint();
     }
 
     public void runAll() {
-        this.createStar();
-        this.createEnemy();
-
-        this.stars.forEach(star -> star.run());
-        this.enemies.forEach(enemy -> enemy.moveForward(this.player.position));
         this.player.run();
         this.specialEnemy.shootAround();
-    }
-
-    private void createStar() {
-        if (this.countStar == 1) {
-            Star star = new Star(
-                    1024,
-                    this.random.nextInt(600) * 1,
-                    this.random.nextInt(3) + 1,
-                    -(this.random.nextInt(3) + 1) * 1,
-                    0
-            );
-            this.stars.add(star);
-            this.countStar = 0;
-        } else {
-            this.countStar += 1;
-        }
-
-    }
-
-    private void createEnemy() {
-        if (this.countEnemy == 100) {
-            Enemy enemy = new Enemy();
-            this.enemies.add(enemy);
-            this.countEnemy = 0;
-        } else {
-            this.countEnemy += 1;
-        }
-
-    }
-
-    private BufferedImage loadImage(String path) {
-        try {
-            return ImageIO.read(new File(path));
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+        this.enemySpawner.playerPosition.set(this.player.position);
+        this.enemySpawner.run();
+        this.starSpawner.run();
     }
 }

@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnemyShoot {
+public class EnemyShoot extends GameObject{
     public List<BulletEnemy> bulletEnemies;
-    private int countBullet = 0;
+    private FrameCounter frameCounter = new FrameCounter(50);
 
     public EnemyShoot() {
         this.bulletEnemies = new ArrayList<>();
     }
 
     public void run(Vecter2D position) {
-        if (countBullet == 50) {
-            countBullet = 0;
+        if (this.frameCounter.run()) {
+            this.frameCounter.reset();
             Vecter2D bulletVelocity = new Vecter2D(3, 0);
             for (int i = 0; i < 16; i++) {
                 BulletEnemy bulletEnemy = new BulletEnemy();
@@ -20,8 +20,6 @@ public class EnemyShoot {
                 bulletVelocity = bulletVelocity.rotate(22.5);
                 this.bulletEnemies.add(bulletEnemy);
             }
-        } else {
-            countBullet++;
         }
     }
 }

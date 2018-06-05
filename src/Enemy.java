@@ -1,13 +1,10 @@
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.Random;
 
-public class Enemy {
+public class Enemy extends GameObject {
 
     private Random random = new Random();
-    private ImageRenderer renderer;
 
-    public Vecter2D position;
     public Vecter2D velocity;
     public int speed;
     public EnemyShoot enemyShoot;
@@ -34,12 +31,14 @@ public class Enemy {
         this.velocity.set(positionPlayer.subtract(this.position).normalize()).multiplyUp(this.speed);
     }
 
+    @Override
     public void run() {
+        super.run();
         this.position.addUp(this.velocity);
     }
-
+    @Override
     public void render(Graphics graphics) {
-        this.renderer.render(graphics, this.position);
+        super.render(graphics);
         this.enemyShoot.bulletEnemies.forEach(bulletEnemy -> bulletEnemy.render(graphics));
     }
 }

@@ -38,14 +38,14 @@ public class GameWindow extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    gameCanvas.player.angleChangeVelocity = 355;
+                    gameCanvas.player.playerMove.angleChangeVelocity = 355;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    gameCanvas.player.angleChangeVelocity = 5;
+                    gameCanvas.player.playerMove.angleChangeVelocity = 5;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     if (speedUp == false) {
-                        gameCanvas.player.velocity.multiplyUp(2);
+                        gameCanvas.player.playerMove.velocity.multiplyUp(2);
                         speedUp = true;
                     }
                 }
@@ -57,15 +57,15 @@ public class GameWindow extends JFrame {
             @Override
             public void keyReleased(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    gameCanvas.player.angleChangeVelocity = 0;
+                    gameCanvas.player.playerMove.angleChangeVelocity = 0;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                    gameCanvas.player.angleChangeVelocity = 0;
+                    gameCanvas.player.playerMove.angleChangeVelocity = 0;
                 }
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
                     if (speedUp) {
                         speedUp = false;
-                        gameCanvas.player.velocity.multiplyUp(0.5f);
+                        gameCanvas.player.playerMove.velocity.multiplyUp(0.5f);
                     }
                 }
                 if (e.getKeyCode() == KeyEvent.VK_DOWN) {

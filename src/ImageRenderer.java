@@ -4,7 +4,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class ImageRenderer {
+public class ImageRenderer implements Renderer{
     public BufferedImage image;
     public int width;
     public int height;
@@ -15,7 +15,7 @@ public class ImageRenderer {
         this.image = this.loadImage(path);
     }
 
-    public void render(Graphics graphics, Vecter2D position) {
+    public void render(Vecter2D position, Graphics graphics) {
         graphics.drawImage(
                 this.image,
                 (int) position.x,
